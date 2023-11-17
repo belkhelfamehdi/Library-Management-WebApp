@@ -46,7 +46,6 @@ public class SearchServlet extends HttpServlet {
             if (!filter.equals("All")) {
                 statement.setString(3, filter);
             }
-            System.out.println(filter);
 
             try (ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
