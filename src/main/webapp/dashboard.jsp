@@ -4,7 +4,6 @@
 <%@ page import="java.util.*" %>
 <%
     String userType = (String) session.getAttribute("userType");
-    // Instantiate the UserBean
     UserBean userBean = new UserBean();
     List<User> users = userBean.getUsers();
 %>
@@ -38,7 +37,7 @@
                     </div>
                 </div>
                 <div class="relative">
-                    <select
+                    <select id="filterSelect"
                             class="appearance-none h-full rounded-r border-t sm:rounded-r-none sm:border-r-0 border-r border-b block appearance-none w-full bg-white border-gray-400 text-gray-700 py-2 px-4 pr-8 leading-tight focus:outline-none focus:border-l focus:border-r focus:bg-white focus:border-gray-500">
                         <option>All</option>
                         <option>Active</option>
@@ -60,7 +59,7 @@
                             </path>
                         </svg>
                     </span>
-                <input placeholder="Search"
+                <input id="searchInput" placeholder="Search"
                        class="appearance-none rounded-r rounded-l sm:rounded-l-none border border-gray-400 border-b block pl-8 pr-6 py-2 w-full bg-white text-sm placeholder-gray-400 text-gray-700 focus:bg-white focus:placeholder-gray-600 focus:text-gray-700 focus:outline-none" />
             </div>
         </div>
@@ -76,6 +75,10 @@
                         </th>
                         <th
                                 class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+
+                        </th>
+                        <th
+                                class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                             Date de naissance
                         </th>
                         <th
@@ -84,12 +87,12 @@
                         </th>
                         <th
                                 class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                            Status
+                            Statut
                         </th>
                     </tr>
 
                     </thead>
-                    <tbody>
+                    <tbody id="userTableBody">
                     <% for (User user : users) { %>
                     <tr class="border-b border-gray-200">
                         <td class="px-5 py-5 bg-white text-sm">
@@ -143,11 +146,6 @@
         </div>
     </div>
 </div>
-<div class="flex mt-96 container">
-    <h1>Welcome, <%= userType %>!</h1>
-    <form action="logout" method="post">
-        <input type="submit" value="Disconnect" />
-    </form>
-</div>
+<script src="./js/table.js"></script>
 </body>
 </html>
