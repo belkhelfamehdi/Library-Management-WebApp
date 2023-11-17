@@ -12,4 +12,5 @@
     <servlet-name>TestConnectionServlet</servlet-name>
     <url-pattern>/TestConnectionServlet</url-pattern>
   </servlet-mapping>
+
 </web-app>
