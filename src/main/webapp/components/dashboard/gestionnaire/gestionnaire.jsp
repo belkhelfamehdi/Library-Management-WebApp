@@ -78,7 +78,7 @@
                             <div class="flex items-center">
                                 <div class="flex-shrink-0 w-11 h-10">
                                     <img class="w-full h-full rounded-full"
-                                         src="../../images/user.png"
+                                         src="../../../images/user.png"
                                          alt="" />
                                 </div>
                                 <div class="ml-3">
