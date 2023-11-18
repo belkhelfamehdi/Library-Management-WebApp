@@ -12,9 +12,10 @@ import java.io.IOException;
 public class LogoutServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession(false);
+        session.removeAttribute("currentComponent");
         if (session != null) {
-            session.invalidate(); // Invalidating the session effectively logs the user out
+            session.invalidate();
         }
-        response.sendRedirect("index.jsp"); // Redirect to the login page after logging out
+        response.sendRedirect("index.jsp");
     }
 }

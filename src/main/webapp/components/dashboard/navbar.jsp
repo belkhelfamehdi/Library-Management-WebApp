@@ -5,20 +5,19 @@
             <span class="text-lg font-semibold">Bibliotheque Universitaire</span>
         </div>
         <%
-            if (userType != null) {
+            String role = (user != null) ? user.getRole() : "";
+            if (user != null) {
         %>
         <div x-data="{ open: false }" class="relative">
             <button @click="open = !open" class="focus:outline-none flex items-center">
-                <!-- User icon -->
-                <img class="h-8 w-8" src="images/user-circle-svgrepo-com.svg">
-                <!-- User name -->
-                <span class="ml-2">Mehdi belkhelfa</span>
+                <img class="h-8 w-8" src="../../images/user-circle-svgrepo-com.svg">
+                <span class="capitalize ml-2"><%= user.getFname() %> <%= user.getLname() %></span>
             </button>
 
             <!-- Dropdown menu -->
             <form action="/logout" method="post">
                 <div x-show.transition.opacity="open" @click.away="open = false" class="absolute left-0 mt-2 w-48 bg-white hover:bg-gray-200 transition duration-200 ease-in-out border rounded shadow-md">
-                    <button @click="disconnect" class="block px-4 py-2 text-gray-800">Disconnect</button>
+                    <button type="submit" onclick="disconnect()" class="block px-4 py-2 text-gray-800">Disconnect</button>
                 </div>
             </form>
         </div>
@@ -32,4 +31,23 @@
         %>
     </div>
 </header>
-<script src="https://cdn.jsdelivr.net/npm/alpinejs@2.8.2/dist/alpine.js" defer></script>
+<%
+    if (user != null) {
+%>
+<div class="fixed left-0 top-0 h-full bg-white text-gray-700 w-64 p-4 shadow-xl shadow-blue-gray-900/5">
+    <div class="mb-2 p-4">
+        <h5 class="block antialiased tracking-normal font-sans text-xl font-semibold leading-snug text-gray-900">Material Tailwind</h5>
+    </div>
+    <nav class="flex flex-col gap-1 min-w-[240px] p-2 font-sans text-base font-normal text-gray-700">
+        <% if ("Abonnee".equals(role)) { %>
+        <%@ include file="../sidebar/Abonne_nav.jsp" %>
+        <% } else if ("Gestionnaire".equals(role)) { %>
+        <%@ include file="../sidebar/Gestionnaire_nav.jsp" %>
+        <% } else { %>
+        <%@ include file="../sidebar/Bibliothecaire_nav.jsp" %>
+        <% } %>
+    </nav>
+</div>
+<%
+    }
+%>

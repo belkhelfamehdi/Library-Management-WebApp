@@ -1,10 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="javax.servlet.http.HttpSession" %>
-<%@ page import="com.bibliotheque.UserBean" %>
 <%@ page import="Models.User" %>
-<%@ page import="java.util.List" %>
 <%
-    String userType = (String) session.getAttribute("userType");
+    User user = (User) session.getAttribute("userInfo");
     if (session != null && session.getAttribute("username") != null) {
         response.sendRedirect("dashboard.jsp");
     }
@@ -19,7 +16,7 @@
     <title>Bibliotheque</title>
 </head>
 <body>
-<%@include file="navbar.jsp" %>
+<%@include file="./components/dashboard/navbar.jsp" %>
 <section class="min-h-screen flex flex-col md:flex-row justify-center space-y-10 md:space-y-0 md:space-x-16 items-center my-0 mx-0 md:mx-0 md:my-0 pt-16">
     <div class="md:w-1/2 max-w-md max-md:mx-auto md:mr-16">
         <img src="./images/draw2.webp" alt="Sample image" class="w-full h-auto" />

@@ -1,5 +1,7 @@
 package com.bibliotheque;
 
+import Models.User;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -17,18 +19,18 @@ public class UserLoginServlet extends HttpServlet {
         if (username.isEmpty() || password.isEmpty()) {
             response.sendRedirect("index.jsp?error=empty");
         } else {
-            String userType = UserDAO.checkLogin(username, password);
+            User user = UserDAO.checkLogin(username, password);
 
-            if (userType != null) {
+            if (user != null) {
                 HttpSession session = request.getSession();
                 session.setAttribute("username", username);
-                session.setAttribute("userType", userType);
+                session.setAttribute("userInfo", user);
 
-                if (userType.equals("Abonnee")) {
+                if (user.getRole().equals("Abonnee")) {
                     response.sendRedirect("dashboard.jsp");
-                } else if (userType.equals("Gestionnaire")) {
+                } else if (user.getRole().equals("Gestionnaire")) {
                     response.sendRedirect("dashboard.jsp");
-                } else if (userType.equals("Bibliothecaire")) {
+                } else if (user.getRole().equals("Bibliothecaire")) {
                     response.sendRedirect("dashboard.jsp");
                 }
             } else {
