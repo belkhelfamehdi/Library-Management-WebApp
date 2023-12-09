@@ -17,11 +17,24 @@
 <div class="mt-14 px-4 my-4 sm:px-8 flex-1 overflow-hidden ml-64 p-4">
     <div class="py-8">
         <%
-        String errorMessage = (String) request.getAttribute("erorMessage");
-        if (errorMessage) != null{
-
+        String errorMessage = (String) request.getSession().getAttribute("errorMessage");
+        if (errorMessage != null){
+        request.getSession().removeAttribute("errorMessage");
             %>
-
+            <div class="p-4 mb-4 text-sm text-red-800 reounded-lg bg-red-50" role="alert">
+                <%= errorMessage %>
+            </div>
+        <%
+        }
+        %>
+        <%
+        String successMessage = (String) request.getSession().getAttribute("succeedMessage");
+        if (successMessage != null){
+            request.getSession().removeAttribute("succeedMessage");
+        %>
+        <div class="p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-50" role="alert">
+            <%= successMessage %>
+        </div>
         <%
         }
         %>

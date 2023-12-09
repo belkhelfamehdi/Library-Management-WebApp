@@ -30,7 +30,7 @@ public class EmpruntServlet extends HttpServlet {
                 int userEmprunts = empruntDAO.getEmpruntByUserId(userIdInt);
                 if (userEmprunts >= 3) {
                     // Redirect to the referer with an error message
-                    request.setAttribute("errorMessage", "Limit exceeded: Users can have at most 3 emprunts.");
+                    request.getSession().setAttribute("errorMessage", "Limite dépassée : Les utilisateurs peuvent avoir au maximum 3 emprunts.");
                     response.sendRedirect(request.getHeader("referer") + "?error=limit_exceeded");
                     return;
                 }
@@ -53,6 +53,7 @@ public class EmpruntServlet extends HttpServlet {
                         emprunt.setDateLimit(java.sql.Date.valueOf(dateLimit));
 
                         empruntDAO.addEmprunt(emprunt);
+                        request.getSession().setAttribute("succeedMessage", "Emprunt(s) ajouté(s) avec succès !");
                     }
                 }
             }
