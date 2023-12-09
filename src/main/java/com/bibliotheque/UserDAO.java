@@ -3,10 +3,7 @@ package com.bibliotheque;
 import Dao.ConnectionDao;
 import Models.User;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class UserDAO {
 
@@ -56,4 +53,53 @@ public class UserDAO {
         }
         return user;
     }
+    public void addUser(User user) {
+        try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/library", "root", "");
+             PreparedStatement preparedStatement = connection.prepareStatement(
+                     "INSERT INTO utilisateur (nom, prenom, DateN, MotDePasse, Role, Statut, Type) VALUES (?, ?, ?, ?, ?, ?, ?)")) {
+
+            preparedStatement.setString(1, user.getFname());
+            preparedStatement.setString(2, user.getFname());
+            preparedStatement.setString(3, user.getBirthDate());
+            preparedStatement.setString(4, user.getBirthDate());
+            preparedStatement.setString(5, user.getRole());
+            preparedStatement.setString(6, user.getStatus());
+            preparedStatement.setString(7, user.getType());
+            System.out.println(user.getBirthDate());
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void updateUser(User user) {
+        try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/library", "root", "");
+             PreparedStatement preparedStatement = connection.prepareStatement(
+                     "UPDATE utilisateur SET nom=?, prenom=?, DateN=?, MotDePasse=?, Role=?, Statut=?, Type=? WHERE id=?")) {
+
+            preparedStatement.setString(1, user.getLname());
+            preparedStatement.setString(2, user.getFname());
+            preparedStatement.setString(3, user.getBirthDate());
+            preparedStatement.setString(4, user.getBirthDate());
+            preparedStatement.setString(5, user.getRole());
+            preparedStatement.setString(6, user.getStatus());
+            preparedStatement.setString(7, user.getType());
+            preparedStatement.setInt(8, user.getId());
+
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void deleteUser(String userId) {
+        try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/library", "root", "");
+             PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM utilisateur WHERE id = ?")) {
+            preparedStatement.setString(1, userId);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

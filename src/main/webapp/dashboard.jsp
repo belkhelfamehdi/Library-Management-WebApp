@@ -17,6 +17,6 @@
 <%@include file="components/dashboard/navbar.jsp" %>
 <div id="root"></div>
 <script src="js/main.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/alpinejs@2.8.2/dist/alpine.js" defer></script>
+<script rel="preload" src="https://cdn.jsdelivr.net/npm/alpinejs@2.8.2/dist/alpine.js" defer></script>
 </body>
 </html>

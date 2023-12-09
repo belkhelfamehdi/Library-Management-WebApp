@@ -50,6 +50,7 @@ public class UserBean implements Serializable {
 
             while (resultSet.next()) {
                 User user = new User();
+                user.setId(resultSet.getInt("id"));
                 user.setFname(resultSet.getString("nom"));
                 user.setLname(resultSet.getString("prenom"));
                 user.setBirthDate(resultSet.getString("DateN"));

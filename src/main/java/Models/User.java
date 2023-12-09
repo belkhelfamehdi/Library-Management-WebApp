@@ -3,6 +3,7 @@ import java.io.Serializable;
 public class User implements Serializable {
     private static final long serialVersionUID = 1L;
 
+    private  int id;
     private String fname;
     private String lname;
     private String birthDate;
@@ -19,13 +20,22 @@ public class User implements Serializable {
         this.role = null;
         this.type = null;
     }
-    public User(String name, String birthDate, String status, String role, String type) {
+    public User(int id, String name, String birthDate, String status, String role, String type) {
+        this.id = id;
         this.fname = name;
         this.lname = name;
         this.birthDate = birthDate;
         this.status = status;
         this.role = role;
         this.type = type;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getFname() {

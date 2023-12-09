@@ -16,48 +16,47 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-@WebServlet("/SearchSanctionServlet")
-public class SearchSanctionServlet extends HttpServlet {
+@WebServlet("/SearchPenaliserServlet")
+public class SearchPenaliserServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        int abonneeId = Integer.parseInt(request.getParameter("id_abonnee"));
+        String query = request.getParameter("query");
+        String filter = request.getParameter("filter");
 
-        List<Penalisation> penalisations = searchPenalisations(abonneeId);
+
+        List<Penalisation> penalisations = searchPenalisations(query);
 
         sendResponse(response, penalisations);
     }
 
-    private List<Penalisation> searchPenalisations(int abonneeId) {
+    private List<Penalisation> searchPenalisations(String query) {
         List<Penalisation> penalisationList = new ArrayList<>();
 
-        String querySql = "SELECT sanction.id, sanction.id_abonnee, sanction.debutP, sanction.finP, utilisateur.nom, utilisateur.prenom " +
-                "FROM sanction " +
-                "JOIN utilisateur ON sanction.id_abonnee = utilisateur.id " +
-                "WHERE sanction.id_abonnee = ?";
+        String querySql = "SELECT penaliser.*, utilisateur.nom, utilisateur.prenom " +
+                "FROM penaliser " +
+                "JOIN utilisateur ON penaliser.id_abonnee = utilisateur.id " +
+                "WHERE utilisateur.nom LIKE ? OR utilisateur.prenom LIKE ?";
 
         try (Connection connection = ConnectionDao.getConnection();
              PreparedStatement statement = connection.prepareStatement(querySql)) {
 
-            statement.setInt(1, abonneeId);
+            statement.setString(1, "%" + query + "%");
+            statement.setString(2, "%" + query + "%");
 
             try (ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
                     Penalisation penalisation = new Penalisation();
                     penalisation.setId(resultSet.getInt("id"));
                     penalisation.setIdAbonnee(resultSet.getInt("id_abonnee"));
-                    penalisation.setDebutP(String.valueOf(resultSet.getDate("debutP")));
-                    penalisation.setFinP(String.valueOf(resultSet.getDate("finP")));
-
-                    // Get abonnee's nom and prenom
                     penalisation.setNomAbonnee(resultSet.getString("nom"));
                     penalisation.setPrenomAbonnee(resultSet.getString("prenom"));
+                    penalisation.setDebutP(String.valueOf(resultSet.getDate("debutP").toLocalDate()));
+                    penalisation.setFinP(String.valueOf(resultSet.getDate("finP").toLocalDate()));
 
                     penalisationList.add(penalisation);
                 }
             }
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
         }
 
         return penalisationList;
@@ -68,14 +67,16 @@ public class SearchSanctionServlet extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
 
         try (PrintWriter out = response.getWriter()) {
-            // Generate HTML dynamically based on the search results
             for (Penalisation penalisation : penalisations) {
                 out.println("<tr class=\"border-b border-gray-200\">");
                 out.println("<td class=\"px-5 py-5 bg-white text-sm\">");
                 out.println("<p class=\"text-gray-900 whitespace-no-wrap\">" + penalisation.getId() + "</p>");
                 out.println("</td>");
                 out.println("<td class=\"px-5 py-5 bg-white text-sm\">");
-                out.println("<p class=\"text-gray-900 whitespace-no-wrap\">" + penalisation.getNomAbonnee() + " " + penalisation.getPrenomAbonnee() + "</p>");
+                out.println("<p class=\"text-gray-900 whitespace-no-wrap\">" + penalisation.getNomAbonnee() + "</p>");
+                out.println("</td>");
+                out.println("<td class=\"px-5 py-5 bg-white text-sm\">");
+                out.println("<p class=\"text-gray-900 whitespace-no-wrap\">" + penalisation.getPrenomAbonnee() + "</p>");
                 out.println("</td>");
                 out.println("<td class=\"px-5 py-5 bg-white text-sm\">");
                 out.println("<p class=\"text-gray-900 whitespace-no-wrap\">" + penalisation.getDebutP() + "</p>");

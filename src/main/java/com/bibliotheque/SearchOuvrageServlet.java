@@ -63,7 +63,6 @@ public class SearchOuvrageServlet extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
 
         try (PrintWriter out = response.getWriter()) {
-            // Generate HTML dynamically based on the search results
             for (Ouvrage ouvrage : ouvrages) {
                 out.println("<tr class=\"border-b border-gray-200\">");
                 out.println("<td class=\"px-5 py-5 bg-white text-sm\">");
@@ -81,6 +80,24 @@ public class SearchOuvrageServlet extends HttpServlet {
                 out.println("<td class=\"px-5 py-5 bg-white text-sm\">");
                 out.println("<p class=\"text-gray-900 whitespace-no-wrap\">" + ouvrage.getDisponibilite() + "</p>");
                 out.println("</td>");
+                out.println("                        <td class=\"px-5 py-5 bg-white text-sm\">\n" +
+                        "                            <button onclick=\"openDetailsModal('"+ ouvrage.getRef() +"', '"+ ouvrage.getTitre() +"', '"+ ouvrage.getAuteur() +"', '"+ ouvrage.getRayon() +"', '"+ ouvrage.getDisponibilite() +"')\"\n" +
+                        "                               class=\"text-blue-700 hover:text-blue-900\">\n" +
+                        "                                Consulter\n" +
+                        "                            </button>\n" +
+                        "                        </td>\n" +
+                        "                        <td class=\"px-5 py-5 bg-white text-sm\">\n" +
+                        "                            <button onclick=\"openModifyOuvrageModal('"+ ouvrage.getRef() +"', '"+ ouvrage.getTitre() +"', '"+ ouvrage.getAuteur() +"', '"+ ouvrage.getRayon() +"', '"+ ouvrage.getDisponibilite() +"')\"\n" +
+                        "                                    class=\"text-green-700 hover:text-green-900\">\n" +
+                        "                                Modifier\n" +
+                        "                            </button>\n" +
+                        "                        </td>\n" +
+                        "                        <td class=\"px-5 py-5 bg-white text-sm\">\n" +
+                        "                            <a href=\"DeleteOuvrageServlet?id="+ ouvrage.getRef() +"\"\n" +
+                        "                               class=\"text-red-700 hover:text-red-900\">\n" +
+                        "                                Supprimer\n" +
+                        "                            </a>\n" +
+                        "                        </td>");
                 out.println("</tr>");
             }
         }

@@ -41,6 +41,11 @@
                 <input id="searchInput" oninput="liveSearch()" placeholder="Search"
                        class="appearance-none rounded-r rounded-l sm:rounded-l-none border border-gray-400 border-b block pl-8 pr-6 py-2 w-full bg-white text-sm placeholder-gray-400 text-gray-700 focus:bg-white focus:placeholder-gray-600 focus:text-gray-700 focus:outline-none" />
             </div>
+            <div class="block relative ml-auto">
+                <button id="ajouterButton" onclick="loadComponent('./components/dashboard/gestionnaire/ajouterAbonnee.jsp')" type="button" class="text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2 text-center me-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-500 dark:focus:ring-blue-800 transition-all duration-300 ease-in-out">
+                    Ajouter
+                </button>
+            </div>
         </div>
         <div class="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
             <div class="inline-block min-w-full shadow rounded-lg overflow-hidden">
@@ -67,6 +72,18 @@
                         <th
                                 class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                             Statut
+                        </th>
+                        <th
+                                class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                            Action
+                        </th>
+                        <th
+                                class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+
+                        </th>
+                        <th
+                                class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+
                         </th>
                     </tr>
 
@@ -101,11 +118,49 @@
                                 <%= usr.getStatus() %>
                             </p>
                         </td>
+                        <td class="px-5 py-5 bg-white text-sm">
+                            <button onclick="openUserModal('<%= usr.getId() %>', '<%= usr.getFname() %>', '<%= usr.getLname() %>', '<%= usr.getBirthDate() %>', '<%= usr.getRole() %>', '<%= usr.getStatus() %>')"
+                                    class="text-blue-700 hover:text-blue-900">
+                                Consulter
+                            </button>
+                        </td>
+                        <td class="px-5 py-5 bg-white text-sm">
+                            <button onclick="openModifyUserModal('<%= usr.getId() %>' ,'<%= usr.getFname() %>', '<%= usr.getLname() %>', '<%= usr.getBirthDate() %>', '<%= usr.getStatus() %>', '<%= usr.getRole() %>')"
+                                    class="text-green-700 hover:text-green-900">
+                                Modifier
+                            </button>
+                        </td>
+                        <td class="px-5 py-5 bg-white text-sm">
+                            <a href="DeleteUserServlet?id=<%= usr.getId() %>"
+                               class="text-red-700 hover:text-red-900">
+                                Supprimer
+                            </a>
+                        </td>
                     </tr>
                     <% } %>
                     </tbody>
+                    <div id="detailsModal" class="hidden fixed inset-0 bg-black bg-opacity-50 overflow-y-auto h-full w-full z-50">
+                        <div id="window" class="relative p-8 bg-white max-w-2xl mx-auto mt-36 rounded-md transform scale-0 transition-transform shadow-lg">
+                            <div id="modalContent" class="text-left">
+                            </div>
+                            <button onclick="closeDetailsModal()" class="absolute top-0 right-0 p-4 text-gray-500 hover:text-gray-700">
+                                <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div id="modifyUserModal" class="hidden fixed inset-0 bg-black bg-opacity-50 overflow-y-auto h-full w-full z-50">
+                        <div id="modalContentuser" class="relative p-8 bg-white max-w-2xl mx-auto mt-36 rounded-md">
+                            <form action="UpdateUserServlet" method="post">
+                                <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Modifier</button>
+                            </form>
+                        </div>
+                    </div>
                 </table>
             </div>
         </div>
     </div>
 </div>
+
